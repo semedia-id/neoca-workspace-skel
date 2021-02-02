@@ -17,12 +17,12 @@ Quick usage:
    -----------
    ```
    mklink /D scss ..\..\..\workspace\scss
-   ````
+   ```
 
    in linux/bash:
    --------------
 
-   ````
+   ```
    ln -s ../../../workspace/scss scss
    ```   
    

@@ -1,0 +1,212 @@
+title: modular
+extends@:
+    type: default
+    context: 'blueprints://pages'
+
+form:
+  validation: loose
+
+  fields:
+
+    tabs:
+      type: tabs
+
+      fields:
+
+        impress:
+          type: tab
+          title: Impress
+
+          fields:
+
+            title0:
+              type: spacer
+              title: Impress Page Setting
+
+            columns:
+              type: columns
+              fields:
+
+                column1:
+                  type: column
+                  fields:
+
+                    section0:
+                      type: section
+                      title: Setting
+
+                    header.impress_class:
+                      type: text
+                      label: Class
+
+                    header.container_class:
+                      type: selectize
+                      label: Container Class
+                      default: flex, center, middle, col
+                      validate:
+                        type: commalist
+                      options:
+                        - text: "flex"
+                          value: "flex"
+                          
+                    header.impress_data:
+                      type: array
+                      style: vertical
+                      default: {
+                        'autoplay':8,
+                        'width':1024,
+                        'height':768,
+                        'max-scale':3,
+                        'min-scale':0,
+                        'perspective':1000
+                        }
+
+
+
+                column2:
+                  type: column
+                  fields:
+
+                    section1:
+                      type: section
+                      title: Presentation Features
+
+                    header.impress_toolbar:
+                      type: toggle
+                      options:
+                        1: 'Yes'
+                        0: 'No'
+                      label: Show Presentation Toolbar
+                      default: 0
+                      highlight: 1
+
+                    header.impress_progress:
+                      type: toggle
+                      options:
+                        1: 'Yes'
+                        0: 'No'
+                      label: Show Number Indicator
+                      default: 0
+                      highlight: 1
+
+                    header.impress_progressbar:
+                      type: toggle
+                      options:
+                        1: 'Yes'
+                        0: 'No'
+                      label: Show Progres Bar
+                      default: 0
+                      highlight: 1
+
+                    header.impress_help:
+                      type: toggle
+                      options:
+                        1: 'Yes'
+                        0: 'No'
+                      label: Show Help
+                      default: 0
+                      highlight: 1
+
+                    header.print_overview:
+                      type: toggle
+                      options:
+                        1: 'Yes'
+                        0: 'No'
+                      label: Show Overview
+                      default: 0
+                      
+                    header.print_title:
+                      type: toggle
+                      options:
+                        1: 'Yes'
+                        0: 'No'
+                      label: Page Title is first slide
+                      default: 0
+
+                    header.print_content:
+                      type: toggle
+                      options:
+                        1: 'Yes'
+                        0: 'No'
+                      label: Page Content is slide intro
+                      default: 0
+                      
+                      
+
+            columns2:
+              type: columns
+              fields:
+
+                column3:
+                  type: column
+                  fields:
+
+                    section2:
+                      type: section
+                      title: Page-Content Data
+                      classes: more-pad
+                      underline: true
+
+                    header.page_data:
+                      type: array
+                      style: vertical
+                      default: {
+                        'x':'0',
+                        'y':'0',
+                        'z':'0'
+                        }                          
+
+                column4:
+                  type: column
+                  fields:
+
+                    section2:
+                      type: section
+                      title: Overview Data
+                      underline: true
+                      classes: more-pad
+
+                    header.overview_data:
+                      type: array
+                      style: vertical
+                      default: {
+                        'scale':10,
+                        'x':3000,
+                        'y':100,
+                        'z':10
+                        }
+
+        slides:
+          type: tab
+          title: Step(s)
+
+          fields:
+
+            ncc_section_0:
+              type: spacer
+              title: Slides
+
+            header.steps:
+              type: list
+              style: vertical
+              collapsed: true
+              btnLabel: Add Step
+              fields:
+                .title:
+                  type: text
+                  label: Slide Title
+                .class:
+                  type: selectize
+                  label: Slide Class
+                  default: flex, center, middle, col
+                .content:
+                  type: editor
+                  style: vertical
+                  size: medium
+                .data:
+                  type: array
+                  style: vertical
+
+
+
+

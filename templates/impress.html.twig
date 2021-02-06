@@ -1,0 +1,150 @@
+{% extends "partials/impress.html.twig" %}
+
+{% macro dataset(data) %}
+    {%- for key,value in data %}data-{{key}}={{value}} {% endfor -%}
+{% endmacro %}
+
+{%- set step = 0 -%}
+{%- set impress_data = '' -%}
+
+{%- do gantry.document.addScript(url('gantry-assets://js/impress.js'), 12, 'footer') -%}
+{%- do gasvara('inline_js',"impress().init();") -%}
+
+{%- if header.impress_data %}
+	{% set impress_data = _self.dataset(header.impress_data) %}
+{% endif -%}
+
+{%- set impress_class = header.impress_class ? 'class="'~header.impress_class|trim~'"' -%}
+
+{%- set container_class = page.header.container_class|join(' ') -%}
+
+{%- if header.overview_data %}
+	{% set overview_data = _self.dataset(header.overview_data) %}
+{% endif -%}
+
+{%- if header.page_data %}
+	{% set page_data = _self.dataset(header.page_data) %}
+{% endif -%}
+
+
+{% set slides %}
+
+	{% for slide in page.header.steps %}
+		{% set step = step + 1 %}
+		{% set slide_id = (slide.title ? ""~slide.title : "slide-"~step) %}
+		{%- if slide.data %}
+			{% set slide_data = _self.dataset(slide.data) %}
+		{% endif -%}
+		{% set slide_class= slide.class|join(' ') %}
+
+		<div id="{{slide_id}}" class="step" {{slide_data}}>
+
+		{%- set slide_content %}
+			{% if slide.title|trim %}<div class='title'>{{ slide.title|raw }}</div>{% endif %}
+			{% if slide.content|trim %}<div class='content'>{{ slide.content|raw }}</div>{% endif %}
+		{% endset -%}
+
+		{% if slide_content|trim %}
+			<div class='container {{ (slide.class? ' '~slide_class) }}'>{{ slide_content|raw }}</div>
+		{% endif %}
+		
+		</div>
+	{% endfor %}
+
+{% endset %}	
+
+{% block content %}
+
+<div class="no-support-message">Your browser doesn't support impress.js.  Try Chrome or Safari.</div>
+
+<div id="impress" {{impress_class|raw}} {{impress_data|raw|trim}}>
+
+	{% if page.header.print_title %}
+		<div id='slide-title' class="step" {{page_data|raw}}>
+			<div class="container page-title {{container_class}}">{{ page.title|raw }}</div>
+		</div>
+	{% endif %}
+	
+
+	{% if page.header.print_content %}
+		<div id='slide-intro' class="step" {{page_data|raw}}>
+			<div class="container page-content {{container_class}}">{{ page.content|raw }}</div>
+		</div>
+	{% endif %}
+	
+	{{ slides|raw }}
+
+	{% if page.header.print_overview %}
+		<div id="overview" class="step" {{overview_data|raw}}>
+		</div>
+	{% endif %}
+			
+
+</div>
+
+
+{% if page.header.impress_toolbar %}<div id="impress-toolbar"></div>{% endif %}
+{% if page.header.impress_progressbar %}<div class="impress-progressbar"><div></div></div>{% endif %}
+{% if page.header.impress_progress %}<div class="impress-progress"></div>{% endif %}
+{% if page.header.impress_help %}<div id="impress-help"></div>{% endif %}
+	
+{% endblock %}
+
+
+
+
+
+
+{# ------------------------------------------------- 
+
+
+		
+
+		{%- if slide.data %}
+			{% set slide_data %}
+				{%- for key,value in slide.data %}data-{{key}}="{{value}}" {% endfor -%}
+			{% endset %}
+		{% endif -%}
+
+		<div id="{{slide_id}}" class="step" {{slide_data}}>
+
+		{%- set slide_content %}
+			{% if slide.title|trim %}<div class='title'>{{ slide.title|raw }}</div>{% endif %}
+			{% if slide.content|trim %}<div class='content'>{{ slide.content|raw }}</div>{% endif %}
+		{% endset -%}
+
+		{% if slide_content|trim %}
+			<div class='container {{ (slide.class? ' '~slide.class) }}'>{{ slide_content|raw }}</div>
+		{% endif %}
+		
+		</div>
+
+	{% endfor %}
+
+
+{% endset %}
+
+
+{%- set mod_class =(page.header.modular_class ? ' '~page.header.modular_class) -%}
+{%- set fp_class = "step" ~ (page.header.firstpage_class ? ' '~page.header.firstpage_class) -%}
+{%- set fp_data %}
+{%- if header.firstpage_datalist %}
+	{%- for key,value in header.firstpage_datalist %}data-{{key}}="{{value}}" {% endfor -%}
+{% endif -%}
+{% endset -%}
+
+{% set default_class = page.header.default_class|raw %}
+
+
+{% block content %}
+
+
+
+
+	</div>
+
+
+
+
+
+#}

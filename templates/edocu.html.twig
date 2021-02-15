@@ -1,0 +1,97 @@
+{% extends "partials/page.html.twig" %}
+
+{% if header.ph_enable %}
+	{% set page_header %}
+		{% set ph_id = 'page-header' ~ rand(1000, 9999) %}
+		{% set ph_contents =  gantry.theme.compile(header.ph_content) %}
+		{% set styles = " --color: "~ (header.ph_color ? header.ph_color~";" : "#000;") %}
+		{% if header.ph_image %}
+			{% set styles = styles ~ " background-image: url('" ~ page.media.images[header.ph_image].url ~ "');" %}			
+		{% endif %}
+		<div id="{{ph_id}}" class="page-header bg auto-text-color hsl-pal {{ header.ph_class|join(' ') }}" style="{{styles|raw|trim}}">
+		{{ gantry.platform.filter(ph_contents|markdown|html)|raw }}
+		</div>
+		<div class='adjust'></div>
+	{% endset %}
+{% endif %}
+
+{% if header.toc_enable %}
+	{% set toc_wrapper_class = (header.toc_position=='right' ?  ' toc-right' : ' toc-left') %}
+	{% set toc_content %}
+		{{ (header.toc_title ? "<h3>"~header.toc_title~"</h3>" : "")|raw }}
+		<div id="gn-toc"></div>
+	{% endset %}
+	{%set toc_inlinejs %}
+		prepare_for_tocbot('.page-content');
+		tocbot.init({
+			tocSelector: '#gn-toc',
+			contentSelector: '.page-content',
+			headingSelector: '{{ header.toc_selector|join(",") }}'
+		});
+	{% endset %}
+	{% do gasvara('inline_js',toc_inlinejs|stripper(true)) %}
+	{%- do gantry.document.addScript(url('gantry-theme://js/tocbot/tocbot.min.js'), 10, 'footer') -%}
+{% endif %}
+
+{% if header.spec_enable %}
+	{% set page_spec %}
+	<div class='page-specs {{ header.spec_class|join(",") }}'>
+	{{ (header.spec_title ? "<h3>"~header.spec_title~"</h3>" : "")|raw }}
+	<ul class='specs-list'>
+	{% for item in header.spec_items %}
+		<li>
+		<h4>{{ item.name }}</h4>
+		<div class='specs'>
+		{% for key,value in item.data %}
+			<p><label>{{key}}</label><span class='value'>{{value}}</span></p>
+		{% endfor %}
+		</div>
+		</li>
+	{% endfor %}
+	</ul>
+	</div>
+	{% endset %}
+{% endif %}
+
+{% if header.gallery_enable %}
+	{% set th_w = header.gallery_tw|default(300) %}
+	{% set th_h = header.gallery_th|default(200) %}
+	{% set lb_w = header.gallery_lw|default(880) %}
+	{% set lb_h = header.gallery_lh|default(495) %}
+	{% do gasvara('inline_js','page_lightbox_init();') %}
+	{% set page_gallery %}
+    <div class='page-gallery'>
+	{{ (header.spec_title ? "<h3>"~header.gallery_title~"</h3>" : "")|raw }}	
+	<ul class='gallery {{ header.gallery_class|join(" ") }}'>
+    {% for item in header.gallery_items %}
+		{% set image = page.media.images[item.image] %}
+		<li class='item pr-100 pb-100'>
+		<figure class='thumb' data-title='{{item.title|raw}}' data-desc='{{item.text}}' data-orig='{{image.url}}'>
+		    {{ image.lightbox(lb_w,lb_h).cropResize(th_w,th_h).html|raw }}
+			{%if item.title|trim %}<figcaption>{{item.title|raw}}</figcaption>{% endif %}
+		</figure>
+		</li>
+    {% endfor %}
+    </ul>
+	</div>
+	{% endset %}
+{% endif %}
+	
+
+{% block content %}
+	{{ page_header }}
+	{% if header.toc_enable %}
+		<div class='wrapper-toc {{toc_wrapper_class}}'>
+		<div class="toc-side size-40 {{ header.toc_class|join(' ') }}">
+		{{ toc_content|raw }}
+		</div>
+	{% endif %}
+	<div class='page-content'>
+	{{ page.content|raw }}
+	{{ page_gallery|raw }}
+	{{ page_spec|raw }}
+	</div>
+	{% if header.toc_enable %}
+		</div>
+	{% endif %}
+{% endblock %}

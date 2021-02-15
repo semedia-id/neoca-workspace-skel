@@ -1,0 +1,246 @@
+title: Extended Default
+extends@:
+    type: default
+    context: 'blueprints://pages'
+
+form:
+  validation: loose
+
+  fields:
+    tabs:
+      type: tabs
+
+      fields:
+        prop:
+          type: tab
+          title: Properties
+
+          fields:
+
+            title0:
+              type: spacer
+              title: Properties
+
+            ph_fieldset:
+              type: fieldset
+              title: Content Header
+              icon: wpforms
+              toggleable: true
+              collapsed: true
+              collapsible: true
+              fields:
+                header.ph_enable:
+                  type: toggle
+                  label: Use Content Header
+                  highlight: 1
+                  default: 0
+                  options:
+                    0: PLUGIN_ADMIN.DISABLED
+                    1: PLUGIN_ADMIN.ENABLED
+
+                header.ph_image:
+                  type: pagemediaselect
+                  label: Background Image
+
+                header.ph_color:
+                  type: colorpicker
+                  label: Background Color
+
+                header.ph_class:
+                  type: selectize
+                  label: Class
+                  validate:
+                    type: commalist
+
+
+                header.ph_content:
+                  type: editor
+                  default: "# {{page.title}}\n***"
+
+            toc_fieldset:
+              type: fieldset
+              title: Table of Content
+              icon: list
+              toggleable: true
+              collapsed: true
+              collapsible: true
+              fields:
+
+                header.toc_enable:
+                  type: toggle
+                  label: Use Table of Content
+                  highlight: 1
+                  default: 0
+                  options:
+                    0: PLUGIN_ADMIN.DISABLED
+                    1: PLUGIN_ADMIN.ENABLED
+
+                header.toc_title:
+                  type: text
+                  label: Title
+                  default: Table of Content
+
+                header.toc_selector:
+                  type: selectize
+                  validate:
+                    type: commalist
+                  label: Selector
+                  selectize:
+                    options:
+                     - text: "h1"
+                       value: "h1"
+                     - text: "h2"
+                       value: "h2"
+                     - text: "h3"
+                       value: "h3"
+                     - text: "h4"
+                       value: "h4"
+                     - text: "h5"
+                       value: "h5"
+                     - text: "h6"
+                       value: "h6"
+
+                header.toc_position:
+                  type: select
+                  default: ''
+                  label: Position
+                  options:
+                    '': 'Use Class'
+                    left: 'Left - Before Content'
+                    right: 'After - Content'
+
+                header.toc_class:
+                  type: selectize
+                  validate:
+                    type: commalist
+                  label: Class
+
+            gallery_fieldset:
+              type: fieldset
+              title: Gallery
+              icon: photo
+              toggleable: true
+              collapsed: true
+              collapsible: true
+              fields:
+
+                header.gallery_enable:
+                  type: toggle
+                  label: Use Gallery
+                  highlight: 1
+                  default: 0
+                  options:
+                    0: PLUGIN_ADMIN.DISABLED
+                    1: PLUGIN_ADMIN.ENABLED
+
+                header.gallery_title:
+                  type: text
+                  label: Title
+
+                header.gallery_class:
+                  type: selectize
+                  validate:
+                    type: commalist
+                  label: Class
+
+                gal_section0:
+                  type: section
+                  title: Thumbnail
+                  
+                header.gallery_tw:
+                  label: Thumbnail Width
+                  type: range
+                  default: 300
+                  validate:
+                    min: 100
+                    max: 700
+                    step: 10
+
+                header.gallery_th:
+                  label: Thumbnail Height
+                  type: range
+                  default: 200
+                  validate:
+                    min: 100
+                    max: 700
+                    step: 10
+
+                gal_section1:
+                  type: section
+                  title: Lightbox
+                  
+                header.gallery_lw:
+                  label: Lightbox Max-Width
+                  type: range
+                  default: 900
+                  validate:
+                    min: 100
+                    max: 1200
+                    step: 10
+
+                header.gallery_lh:
+                  label: Lightbox Max-Height
+                  type: range
+                  default: 700
+                  validate:
+                    min: 100
+                    max: 800
+                    step: 10
+                    
+                header.gallery_items:
+                  type: list
+                  label: Gallery Item
+                  fields:
+                    .image:
+                       preview_images: true
+                       type: pagemediaselect
+                       label: image
+                    .title:
+                       type: text
+                       label: title
+                    .text:
+                       type: textarea
+                       label: Description
+
+            spec_fieldset:
+              type: fieldset
+              title: List
+              icon: qrcode
+              toggleable: true
+              collapsed: true
+              collapsible: true
+              fields:
+
+                header.spec_enable:
+                  type: toggle
+                  label: Print List
+                  highlight: 1
+                  default: 0
+                  options:
+                    0: PLUGIN_ADMIN.DISABLED
+                    1: PLUGIN_ADMIN.ENABLED
+
+                header.spec_title:
+                  type: text
+                  label: Title
+
+                header.spec_class:
+                  type: selectize
+                  validate:
+                    type: commalist
+                  label: Class
+
+                spec_section:
+                  type: section
+                  title: Data
+
+                header.spec_items:
+                  type: list
+                  style: vertical
+                  fields:
+                    .name:
+                       type: text
+                       style: vertical
+                    .data:
+                       type: array
+                       style: vertical

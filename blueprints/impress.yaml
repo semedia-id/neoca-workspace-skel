@@ -198,6 +198,8 @@ form:
                 .class:
                   type: selectize
                   label: Slide Class
+                  validate:
+                    type: commalist
                   default: flex, center, middle, col
                 .content:
                   type: editor

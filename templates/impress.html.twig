@@ -1,4 +1,4 @@
-{% extends "partials/impress.html.twig" %}
+{% extends "partials/page.html.twig" %}
 
 {% macro dataset(data) %}
     {%- for key,value in data %}data-{{key}}={{value}} {% endfor -%}
@@ -26,12 +26,14 @@
 	{% set page_data = _self.dataset(header.page_data) %}
 {% endif -%}
 
+{% do assets.addCss('user://workspace/css/impress.css') %}
 
 {% set slides %}
 
 	{% for slide in page.header.steps %}
 		{% set step = step + 1 %}
-		{% set slide_id = (slide.title ? ""~slide.title : "slide-"~step) %}
+		{# set slide_id =  : "slide-"~step) #}
+		{% set slide_id = "slide-"~step~(slide.title ? "-"~slide.title|lower|replace(' ','_')) %}
 		{%- if slide.data %}
 			{% set slide_data = _self.dataset(slide.data) %}
 		{% endif -%}
